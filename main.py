@@ -13,22 +13,21 @@ random.seed(42)
 # TODO(osman) set a bell that rings after calculation is done.
 # https://www.baeldung.com/cs/iterative-deepening-vs-depth-first-search
 
-moveDelay = 0.3
+moveDelay = 0.3   # s
+specsUpdate = 100 # ms
 
 class Graph:
     def __init__(self, board):
         self.board = board
 
         self.visitedNodes = 0
-        
+        self.activeNodes = 0
 
     def listToStr(self, theList):
         return "".join([str(i) for i in theList])
   
-
     def strToList(self, theStr):
         return [int(i) for i in theStr]
-
 
     def getChildNodes(self, board): 
         # sourcery skip: inline-immediately-returned-variable, list-comprehension
@@ -36,11 +35,8 @@ class Graph:
         for possibleMove in self.allPossibleMoves(board):
             childList.append((self.listToStr(self.swapTiles(possibleMove, board)), possibleMove))
         return childList
-    
-
-    
-    def bfs(self): 
-        
+      
+    def bfs(self):     
         visited = [self.listToStr(self.board)]
         queue = [(self.listToStr(self.board), "")]
         currentNode, path = queue[0]
@@ -56,10 +52,10 @@ class Graph:
             #    return path
 
             self.visitedNodes = len(visited)
-
+            self.activeNodes = len(queue)
             for child, move in self.getChildNodes(self.strToList(currentNode)):
                 move = path + str(move)
-                #print(child, move, len(move), "queue length: ", len(queue))
+                print(child, move, len(move), "queue length: ", len(queue))
 
                 if child not in visited:
                     visited.append(child)
@@ -84,7 +80,6 @@ class Graph:
             self.visitedNodes = len(visited)
             
 
-
             for child, move in self.getChildNodes(self.strToList(currentNode)):
                 move = path + str(move)
                 if child not in visited:
@@ -96,24 +91,28 @@ class Graph:
         print("This is not supposed to happen!!")
 
     def dfs(self): # Depth first search
-        visited = []
+        visited = [self.listToStr(self.board)]
         vertex, path =  self.listToStr(self.board), ""
         stack = [(vertex, path)]
 
         while stack:
             vertex, path = stack.pop()
             self.visitedNodes = len(visited)
+            self.activeNodes = len(stack)
             if vertex == "012345678":
                 return path
-            
-            if vertex not in visited:
+
+
+            if vertex in visited:
+                continue
+            else:
                 visited.append(vertex)
+
 
             for child, move in self.getChildNodes(self.strToList(vertex)):
                 move = path + str(move)
                 
-                if child == "012345678":
-                    return move
+                
 
                 if len(move) > 40:
                     continue
@@ -197,8 +196,11 @@ class GameWindow(tkinter.Tk):
         self.visitedVertexCounter = tkinter.Label(self.bottomFrame, text="Visited vertex number: 0")
         self.visitedVertexCounter.grid(row=0, column=1)
 
+        self.activeVertexCounter = tkinter.Label(self.bottomFrame, text="Active vertex number: 0")
+        self.activeVertexCounter.grid(row=1, column=1)
+
         self.timeLabel = tkinter.Label(self.bottomFrame, text="Calculation time: 0sn")
-        self.timeLabel.grid(row=1, column=1)
+        self.timeLabel.grid(row=2, column=1)
 
         # ------------------------- BFS ------------------------------
 
@@ -237,7 +239,7 @@ class GameWindow(tkinter.Tk):
         self.dfsCalculateButton.grid(row=2, column=1)
 
         self.graph = Graph(self.board)
-        self.vertexLabelUpdateClock()
+        self.updateSpecsClock()
 
   
     def allButtonsState(self, state):
@@ -249,12 +251,14 @@ class GameWindow(tkinter.Tk):
         #self.ucsCalculateButton["state"] = state
 
 
-    def vertexLabelUpdateClock(self):
+    def updateSpecsClock(self):
         if self.vertexCounter:
             self.visitedVertexCounter["text"] = f"Visited vertex number: {self.graph.visitedNodes}"
+            self.activeVertexCounter["text"] = f"Active vertex number: {self.graph.activeNodes}"
+        
 
         self.visitedVertexCounter["text"] = f"Visited vertex number: {self.graph.visitedNodes}"
-        self.after(1000, self.vertexLabelUpdateClock)
+        self.after(100, self.updateSpecsClock)
 
 
     def solveFunc(self, n): 
@@ -281,7 +285,7 @@ class GameWindow(tkinter.Tk):
         seconds = round(seconds, 2)
 
 
-        self.timeLabel["text"] = f"Calculation time: {minutes}min {seconds}sec"
+        self.timeLabel["text"] = f"Calculation time: {int(minutes)}min {seconds}sec"
         
         self.vertexCounter = False
         print("solution: ",solution)
