@@ -9,8 +9,8 @@ import threading
 
 random.seed(42)
 # Add as much as comment as possible
-# TODO(osman) set fixed width to right panel
-# TODO(osman) set a bell that rings after calculation is done.
+
+
 # https://www.baeldung.com/cs/iterative-deepening-vs-depth-first-search
 
 moveDelay = 0.3   # s
@@ -183,7 +183,7 @@ class GameWindow(tkinter.Tk):
         
         self.bottomFrame = tkinter.Frame(self)
         self.bottomFrame.grid(row=1, column=0)
-        # TODO(osman) add fonts to the button labels.
+        
         self.shuffleButton = tkinter.Button(self.bottomFrame, text="Press to shuffle board", command=self.shuffleButtonFunc)
         self.shuffleButton.grid(row=0, column=0)
         
