@@ -63,7 +63,7 @@ class Graph:
                     if child == "012345678":
                         return move
 
-        print("This is not supposed to happen!!")
+        print("This is a complete search. This is not supposed to happen!!")
    
     def ucs(self): # Uniform- cost search
         # https://www.geeksforgeeks.org/uniform-cost-search-dijkstra-for-large-graphs/
