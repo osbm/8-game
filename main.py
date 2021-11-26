@@ -7,11 +7,13 @@ import time
 import numpy as np
 import threading
 
+random.seed(42)
 # Add as much as comment as possible
 # TODO(osman) set fixed width to right panel
 # TODO(osman) set a bell that rings after calculation is done.
 # https://www.baeldung.com/cs/iterative-deepening-vs-depth-first-search
 
+moveDelay = 0.3
 
 class Graph:
     def __init__(self, board):
@@ -38,30 +40,34 @@ class Graph:
 
     
     def bfs(self): 
-        visited = []
-        queue = [[self.listToStr(self.board), ""]]
         
-        while queue:
-            currentNode, path = queue.pop(0)
-            visited.append(currentNode)
-            
-            if currentNode == "012345678":
+        visited = [self.listToStr(self.board)]
+        queue = [(self.listToStr(self.board), "")]
+        currentNode, path = queue[0]
+        if currentNode == "012345678":
                 return path
 
-            self.visitedNodes = len(visited)
-            
+        while queue:
+            currentNode, path = queue.pop(0)
 
+            #visited.append(currentNode)
+            
+            #if currentNode == "012345678":
+            #    return path
+
+            self.visitedNodes = len(visited)
 
             for child, move in self.getChildNodes(self.strToList(currentNode)):
                 move = path + str(move)
-                print(child, move, len(move), "queue length: ", len(queue))
-                if child == "012345678":
-                        return move
+                #print(child, move, len(move), "queue length: ", len(queue))
 
                 if child not in visited:
                     visited.append(child)
-                    queue.append([child, move])
-                    
+                    queue.append((child, move))
+                    if child == "012345678":
+                        return move
+
+        print("This is not supposed to happen!!")
    
     def ucs(self): # Uniform- cost search
         # https://www.geeksforgeeks.org/uniform-cost-search-dijkstra-for-large-graphs/
@@ -86,6 +92,8 @@ class Graph:
                     queue.append([child, move])
                     if child == "012345678":
                         return move
+
+        print("This is not supposed to happen!!")
 
     def dfs(self): # Depth first search
         visited = []
@@ -197,7 +205,7 @@ class GameWindow(tkinter.Tk):
 
         
 
-        self.bfsLabel = tkinter.Label(self.rightBar, text="Breatdh-first Search")
+        self.bfsLabel = tkinter.Label(self.rightBar, text="Breadth-first Search")
         self.bfsLabel.grid(row=0, column=0)
 
         
@@ -281,7 +289,7 @@ class GameWindow(tkinter.Tk):
 
         for move in moves:
             self.tileButtonFunc(move)
-            time.sleep(0.01)
+            time.sleep(moveDelay)
 
         self.allButtonsState("normal")
 
