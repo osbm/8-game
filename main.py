@@ -98,21 +98,16 @@ class Graph:
             vertex, path = stack.pop()
             self.visitedNodes = len(visited)
             self.activeNodes = len(stack)
+
+            
             if vertex == "012345678":
                 return path
-
-
-            if vertex in visited:
-                continue
             else:
                 visited.append(vertex)
 
 
             for child, move in self.getChildNodes(self.strToList(vertex)):
                 move = path + str(move)
-                
-                
-
                 if len(move) > 40:
                     continue
 
