@@ -46,14 +46,13 @@ class Graph:
         while queue:
             currentNode, path = queue.pop(0)
 
-            #visited.append(currentNode)
-            
-            #if currentNode == "012345678":
-            #    return path
-
-            self.visitedNodes = len(visited)
+            self.visitedNodes = len(visited) # to show these stats in the tkinter
             self.activeNodes = len(queue)
+
+         
+
             for child, move in self.getChildNodes(self.strToList(currentNode)):
+                
                 move = path + str(move)
                 print(child, move, len(move), "queue length: ", len(queue))
 
