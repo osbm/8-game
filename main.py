@@ -304,9 +304,22 @@ class GameWindow(tkinter.Tk):
         self.graph.board = self.graph.swapTiles(i, self.graph.board)
         self.updateTiles()
         
-        
+    def isBoardValid(self, arr):
+        inv_count = 0
+        empty_value = -1
+        for i in range(9):
+            for j in range(i + 1, 9):
+                if arr[j] != empty_value and arr[i] != empty_value and arr[i] > arr[j]:
+                    inv_count += 1
+        return inv_count % 2 == 0
+
     def shuffleButtonFunc(self):
         random.shuffle(self.graph.board)
+        print("shuffled Once")
+        while not self.isBoardValid(self.graph.board):
+            random.shuffle(self.graph.board)
+            print("shuffled twice")
+        
         self.updateTiles()
 
 
