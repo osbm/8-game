@@ -129,8 +129,9 @@ class Graph:
 
         for i in range(1, max_depth):
             self.idsDepth = i
-            if solution:=self.dfs(i, maxDepth=i): # 
+            if solution:=self.dfs(maxDepth=i): # 
                 return solution
+        return ""
 
 
 
