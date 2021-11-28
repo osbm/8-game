@@ -7,6 +7,9 @@ using namespace std; // uwu
 void print (string context) {
     cout << context << endl;
 }
+void print (int context) {
+    cout << context << endl;
+}
 
 class Graph
 {    
