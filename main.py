@@ -6,10 +6,11 @@ import random
 import time
 import numpy as np
 import threading
-
+import sys
 random.seed(42)# i need to test the algorithms on the same boards to check if they work consistently
 
-
+# i have used the walrus operator in this script so your python version must be higher from 3.8
+assert sys.version_info > (3, 8), "Use Python 3.8 or newer"
 
 # https://www.baeldung.com/cs/iterative-deepening-vs-depth-first-search
 
@@ -22,6 +23,7 @@ class Graph:
 
         self.visitedNodes = 0
         self.activeNodes = 0
+        self.idsDepth = 0
 
     def listToStr(self, theList):
         return "".join([str(i) for i in theList])
@@ -96,7 +98,7 @@ class Graph:
                     if child == "012345678":
                         return move
 
-    def dfs(self): # Depth first search
+    def dfs(self, maxDepth=40): # Depth first search
         visited = [self.listToStr(self.board)]
         vertex, path =  self.listToStr(self.board), ""
         stack = [(vertex, path)]
@@ -112,7 +114,7 @@ class Graph:
 
             for child, move in self.getChildNodes(self.strToList(vertex)):
                 move = path + str(move)
-                if len(move) > 40:
+                if len(move) > maxDepth:
                     continue
                 print(child, move, "\t", len(move), "queue length: ", len(stack))
                 if child not in visited:
@@ -120,11 +122,17 @@ class Graph:
                     visited.append(vertex)
                     if vertex == "012345678":
                         return path
-        print("THIS IS NOT POSSIBLE")
         return ""
     
     def ids(self): # Iterative deepening search
-        ...
+        max_depth = 35
+
+        for i in range(1, max_depth):
+            self.idsDepth = i
+            if solution:=self.dfs(i, maxDepth=i): # 
+                return solution
+
+
 
     def gbs(self): # Greedy Best Search
         ...
