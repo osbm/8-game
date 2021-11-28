@@ -172,8 +172,37 @@ class Graph:
                     if child == "012345678":
                         return move
 
-    def aStar(self): # A*
-        ...
+    def aStar (self): # A* 
+        strBoard = self.listToStr(self.board)
+        
+        visited = [strBoard]
+        queue = [(strBoard, "", self.evaluate(strBoard))]
+        currentNode, path, h = queue[0]
+        if currentNode == "012345678":
+                return path
+
+        while queue:
+            queue = sorted(queue, key=lambda x: len(x[1])+ x[2]) # length of the path + evaluation value
+            currentNode, path, value = queue.pop(0)
+
+            self.visitedNodes = len(visited) # to show these stats in the tkinter
+            self.activeNodes = len(queue)
+
+         
+
+            for child, move in self.getChildNodes(self.strToList(currentNode)):
+                
+                move = path + str(move)
+                print(child, move, len(move), "queue length: ", len(queue))
+
+                if child not in visited:
+                    visited.append(child)
+                    queue.append((child, move, self.evaluate(child)))
+                    if child == "012345678":
+                        return move
+
+        
+
     
     def swapTiles(self, index, board):
         board = board.copy()
