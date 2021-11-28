@@ -7,8 +7,8 @@ import time
 import numpy as np
 import threading
 
-random.seed(42)
-# Add as much as comment as possible
+random.seed(42)# i need to test the algorithms on the same boards to check if they work consistently
+
 
 
 # https://www.baeldung.com/cs/iterative-deepening-vs-depth-first-search
@@ -78,9 +78,11 @@ class Graph:
             self.visitedNodes = len(visited) # to show these stats in the tkinter
             self.activeNodes = len(queue)
 
+            # My cost function is the total length of path.
             # This is totally unnecessary because all the step costs are equal,
-            # and it will slow the Uniform cost search down because i will be adding 
-            # extra step of calculation.
+            # This is already equal to BFS, but i will add for the sake of the 
+            # implementation and it will slow the Uniform cost search down 
+            # because i will be adding extra step of calculation.
 
             queue = sorted(queue, key=lambda x: len(x[1]))
 
@@ -93,7 +95,6 @@ class Graph:
                     queue.append((child, move))
                     if child == "012345678":
                         return move
-
 
     def dfs(self): # Depth first search
         visited = [self.listToStr(self.board)]
@@ -122,10 +123,15 @@ class Graph:
         print("THIS IS NOT POSSIBLE")
         return ""
     
-    # Iterative deepening search
-    # greedy best search
-    # a* search
+    def ids(self): # Iterative deepening search
+        ...
 
+    def gbs(self): # Greedy Best Search
+        ...
+
+    def aStar(self): # A*
+        ...
+    
     def swapTiles(self, index, board):
         board = board.copy()
         index2 = board.index(8)
