@@ -133,7 +133,15 @@ class Graph:
                 return solution
         return ""
 
-
+    def evaluate(self, board: str):
+        print(board)
+        evaluation = 0
+        for i in range(9):
+            index =  board.index(str(i))
+            y1, x1 = divmod(index, 3)
+            y2, x2 = divmod(i, 3)
+            evaluation += (abs(x1-x2)**2 + abs(y1-y2)**2) ** (1/2)
+        return evaluation
 
     def gbs(self): # Greedy Best Search
         ...
