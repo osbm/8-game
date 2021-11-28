@@ -63,7 +63,7 @@ class Graph:
                         return move
 
         print("This is a complete search. This is not supposed to happen!!")
-   
+
     def ucs(self): # Uniform- cost search
         # https://www.geeksforgeeks.org/uniform-cost-search-dijkstra-for-large-graphs/
         visited = []
@@ -81,39 +81,41 @@ class Graph:
 
             for child, move in self.getChildNodes(self.strToList(currentNode)):
                 move = path + str(move)
+                print(child, move, len(move), "queue length: ", len(queue))
+
                 if child not in visited:
                     visited.append(child)
-                    queue.append([child, move])
+                    queue.append((child, move))
                     if child == "012345678":
                         return move
 
-        print("This is not supposed to happen!!")
 
     def dfs(self): # Depth first search
         visited = [self.listToStr(self.board)]
         vertex, path =  self.listToStr(self.board), ""
         stack = [(vertex, path)]
 
+        if vertex == "012345678":
+                return path
+
         while stack:
             vertex, path = stack.pop()
+
             self.visitedNodes = len(visited)
             self.activeNodes = len(stack)
-
-            
-            if vertex == "012345678":
-                return path
-            else:
-                visited.append(vertex)
-
 
             for child, move in self.getChildNodes(self.strToList(vertex)):
                 move = path + str(move)
                 if len(move) > 40:
                     continue
-
+                print(child, move, "\t", len(move), "queue length: ", len(stack))
                 if child not in visited:
                     stack.append((child, move))
+                    visited.append(vertex)
+                    if vertex == "012345678":
+                        return path
         print("THIS IS NOT POSSIBLE")
+        return ""
     
     # Iterative deepening search
     # greedy best search
@@ -259,8 +261,8 @@ class GameWindow(tkinter.Tk):
         
         searchFunctions = {
             "BFS": self.graph.bfs,
+            "UCS": self.graph.ucs,
             "DFS": self.graph.dfs,
-            "UCS": self.graph.ucs
         }
         
         thread = threading.Thread(target=partial(self.threadFunc, searchFunctions[n]))
@@ -314,7 +316,8 @@ class GameWindow(tkinter.Tk):
         while not self.isBoardValid(self.graph.board):
             random.shuffle(self.graph.board)
             print("shuffled twice")
-        
+       # print(self.isBoardValid([7,5,2,0,6,8,3,4,1]), "if this false, You stupid ass")
+        #print(self.isBoardValid(self.graph.board), "if this false, You stupid ass")
         self.updateTiles()
 
 
