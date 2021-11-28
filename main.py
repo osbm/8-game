@@ -66,18 +66,23 @@ class Graph:
 
     def ucs(self): # Uniform- cost search
         # https://www.geeksforgeeks.org/uniform-cost-search-dijkstra-for-large-graphs/
-        visited = []
-        queue = [[self.listToStr(self.board), ""]]
-        
-        while queue:
-            currentNode, path = queue.pop(0)
-            visited.append(currentNode)
-            
-            if currentNode == "012345678":
+        visited = [self.listToStr(self.board)]
+        queue = [(self.listToStr(self.board), "")]
+        currentNode, path = queue[0]
+        if currentNode == "012345678":
                 return path
 
-            self.visitedNodes = len(visited)
-            
+        while queue:
+            currentNode, path = queue.pop(0)
+
+            self.visitedNodes = len(visited) # to show these stats in the tkinter
+            self.activeNodes = len(queue)
+
+            # This is totally unnecessary because all the step costs are equal,
+            # and it will slow the Uniform cost search down because i will be adding 
+            # extra step of calculation.
+
+            queue = sorted(queue, key=lambda x: len(x[1]))
 
             for child, move in self.getChildNodes(self.strToList(currentNode)):
                 move = path + str(move)
