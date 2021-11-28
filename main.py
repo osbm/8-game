@@ -98,7 +98,7 @@ class Graph:
                     if child == "012345678":
                         return move
 
-    def dfs(self, maxDepth=40): # Depth first search
+    def dfs(self, maxDepth=35): # Depth first search
         visited = [self.listToStr(self.board)]
         vertex, path =  self.listToStr(self.board), ""
         stack = [(vertex, path)]
@@ -116,8 +116,8 @@ class Graph:
                 move = path + str(move)
                 if len(move) > maxDepth:
                     continue
-                print(child, move, "\t", len(move), "queue length: ", len(stack))
                 if child not in visited:
+                    print(maxDepth, child, move, "\t", len(move), "queue length: ", len(stack))
                     stack.append((child, move))
                     visited.append(vertex)
                     if vertex == "012345678":
