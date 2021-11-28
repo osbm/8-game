@@ -219,31 +219,19 @@ class GameWindow(tkinter.Tk):
 
         # ------------------------- BFS ------------------------------
 
-
-        
-
         self.bfsLabel = tkinter.Label(self.rightBar, text="Breadth-first Search")
         self.bfsLabel.grid(row=0, column=0)
 
-        
-        
         self.bfsCalculateButton = tkinter.Button(self.rightBar, text="Solve", command=partial(self.solveFunc, "BFS"))
         self.bfsCalculateButton.grid(row=0, column=1)
 
-        
-
         # ------------------------- UCS ------------------------------
-
-      
 
         self.ucsLabel = tkinter.Label(self.rightBar, text="Uniform- cost search")
         self.ucsLabel.grid(row=1, column=0)
 
-        
-
         self.ucsStartButton = tkinter.Button(self.rightBar, text="Solve", command=partial(self.solveFunc, "UCS"))
         self.ucsStartButton.grid(row=1, column=1)
-
 
         # -------------------------- DFS --------------------------------
 
@@ -252,6 +240,30 @@ class GameWindow(tkinter.Tk):
         
         self.dfsCalculateButton = tkinter.Button(self.rightBar, text="Solve", command=partial(self.solveFunc, "DFS"))
         self.dfsCalculateButton.grid(row=2, column=1)
+
+        # ------------------------- IDS -----------------------------------
+
+        self.idsLabel = tkinter.Label(self.rightBar, text="Iterative Deepening search")
+        self.idsLabel.grid(row=3, column=0)
+
+        self.idsButton = tkinter.Button(self.rightBar, text="Solve", command=partial(self.solveFunc, "IDS"))
+        self.idsButton.grid(row=3, column=1)
+
+        # ------------------------- GBS ------------------------------------
+
+        self.gbsLabel = tkinter.Label(self.rightBar, text="Greedy Best search")
+        self.gbsLabel.grid(row=4, column=0)
+
+        self.gbsButton = tkinter.Button(self.rightBar, text="Solve", command=partial(self.solveFunc, "GBS"))
+        self.gbsButton.grid(row=4, column=1)
+
+        # ------------------------- A* --------------------------------------
+
+        self.aStarLabel = tkinter.Label(self.rightBar, text="A* search")
+        self.aStarLabel.grid(row=5, column=0)
+
+        self.aStarButton = tkinter.Button(self.rightBar, text="Solve", command=partial(self.solveFunc, "aStar"))
+        self.aStarButton.grid(row=5, column=1)
 
         self.graph = Graph(self.board)
         self.updateSpecsClock()
@@ -282,6 +294,9 @@ class GameWindow(tkinter.Tk):
             "BFS": self.graph.bfs,
             "UCS": self.graph.ucs,
             "DFS": self.graph.dfs,
+            "IDS": self.graph.ids,
+            "GBS": self.graph.gbs,
+            "aStar": self.graph.aStar
         }
         
         thread = threading.Thread(target=partial(self.threadFunc, searchFunctions[n]))
