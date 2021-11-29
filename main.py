@@ -63,8 +63,8 @@ class Graph:
                     queue.append((child, move))
                     if child == "012345678":
                         return move
-
         print("This is a complete search. This is not supposed to happen!!")
+        return ""
 
     def ucs(self): # Uniform- cost search
         # https://www.geeksforgeeks.org/uniform-cost-search-dijkstra-for-large-graphs/
@@ -97,6 +97,8 @@ class Graph:
                     queue.append((child, move))
                     if child == "012345678":
                         return move
+        return ""
+
 
     def dfs(self, maxDepth=35): # Depth first search
         visited = [self.listToStr(self.board)]
@@ -171,6 +173,8 @@ class Graph:
                     queue.append((child, move, self.evaluate(child)))
                     if child == "012345678":
                         return move
+        return ""
+
 
     def aStar (self): # A* 
         strBoard = self.listToStr(self.board)
@@ -200,7 +204,8 @@ class Graph:
                     queue.append((child, move, self.evaluate(child)))
                     if child == "012345678":
                         return move
-    
+        return ""
+
     def swapTiles(self, index, board):
         board = board.copy()
         index2 = board.index(8)
