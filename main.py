@@ -38,7 +38,7 @@ class Graph:
             childList.append((self.listToStr(self.swapTiles(possibleMove, board)), possibleMove))
         return childList
       
-    def bfs(self):     
+    def bfs(self): # Breath-first search
         visited = [self.listToStr(self.board)]
         queue = [(self.listToStr(self.board), "")]
         currentNode, path = queue[0]
@@ -200,9 +200,6 @@ class Graph:
                     queue.append((child, move, self.evaluate(child)))
                     if child == "012345678":
                         return move
-
-        
-
     
     def swapTiles(self, index, board):
         board = board.copy()
@@ -231,7 +228,6 @@ class Graph:
             possibleMoves.append(i-1)
 
         return possibleMoves
-
 
 
 class GameWindow(tkinter.Tk):
@@ -337,9 +333,14 @@ class GameWindow(tkinter.Tk):
         for tile in self.tiles:
             tile["state"] = state 
 
-        #self.shuffleButton["state"] = state
-        #self.bfsCalculateButton["state"] = state
-        #self.ucsCalculateButton["state"] = state
+        self.shuffleButton["state"] = state
+        self.bfsCalculateButton["state"] = state
+        self.ucsStartButton["state"] = state
+        self.dfsCalculateButton["state"] = state
+        self.idsButton["state"] = state
+        self.gbsButton["state"] = state
+        self.aStarButton["state"] = state
+
 
 
     def updateSpecsClock(self):
@@ -414,8 +415,6 @@ class GameWindow(tkinter.Tk):
         while not self.isBoardValid(self.graph.board):
             random.shuffle(self.graph.board)
             print("shuffled twice")
-       # print(self.isBoardValid([7,5,2,0,6,8,3,4,1]), "if this false, You stupid ass")
-        #print(self.isBoardValid(self.graph.board), "if this false, You stupid ass")
         self.updateTiles()
 
 
