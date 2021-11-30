@@ -56,14 +56,14 @@ class Graph:
             for child, move in self.getChildNodes(self.strToList(currentNode)):
                 
                 move = path + str(move)
-                print(child, move, len(move), "queue length: ", len(queue))
+                #print(child, move, len(move), "queue length: ", len(queue))
 
                 if child not in visited:
                     visited.append(child)
                     queue.append((child, move))
                     if child == "012345678":
                         return move
-        print("This is a complete search. This is not supposed to happen!!")
+        #print("This is a complete search. This is not supposed to happen!!")
         return ""
 
     def ucs(self): # Uniform- cost search
@@ -90,7 +90,7 @@ class Graph:
 
             for child, move in self.getChildNodes(self.strToList(currentNode)):
                 move = path + str(move)
-                print(child, move, len(move), "queue length: ", len(queue))
+                #print(child, move, len(move), "queue length: ", len(queue))
 
                 if child not in visited:
                     visited.append(child)
@@ -119,7 +119,7 @@ class Graph:
                 if len(move) > maxDepth:
                     continue
                 if child not in visited:
-                    print(maxDepth, child, move, "\t", len(move), "queue length: ", len(stack))
+                    #print(maxDepth, child, move, "\t", len(move), "queue length: ", len(stack))
                     stack.append((child, move))
                     visited.append(vertex)
                     if vertex == "012345678":
@@ -136,7 +136,7 @@ class Graph:
         return ""
 
     def evaluate(self, board: str):
-        print(board)
+        #print(board)
         evaluation = 0
         for i in range(9):
             index =  board.index(str(i))
@@ -166,7 +166,7 @@ class Graph:
             for child, move in self.getChildNodes(self.strToList(currentNode)):
                 
                 move = path + str(move)
-                print(child, move, len(move), "queue length: ", len(queue))
+                #print(child, move, len(move), "queue length: ", len(queue))
 
                 if child not in visited:
                     visited.append(child)
@@ -197,7 +197,7 @@ class Graph:
             for child, move in self.getChildNodes(self.strToList(currentNode)):
                 
                 move = path + str(move)
-                print(child, move, len(move), "queue length: ", len(queue))
+                #print(child, move, len(move), "queue length: ", len(queue))
 
                 if child not in visited:
                     visited.append(child)
@@ -282,29 +282,32 @@ class GameWindow(tkinter.Tk):
         self.timeLabel = tkinter.Label(self.bottomFrame, text="Calculation time: 0sn")
         self.timeLabel.grid(row=2, column=1)
 
+        self.solutionLength =tkinter.Label(self.bottomFrame, text="Solution Length: 0")
+        self.solutionLength.grid(row=3, column=1)
+
         # ------------------------- BFS ------------------------------
 
         self.bfsLabel = tkinter.Label(self.rightBar, text="Breadth-first Search")
         self.bfsLabel.grid(row=0, column=0)
 
-        self.bfsCalculateButton = tkinter.Button(self.rightBar, text="Solve", command=partial(self.solveFunc, "BFS"))
-        self.bfsCalculateButton.grid(row=0, column=1)
+        self.bfsButton = tkinter.Button(self.rightBar, text="Solve", command=partial(self.solveFunc, "BFS"))
+        self.bfsButton.grid(row=0, column=1)
 
         # ------------------------- UCS ------------------------------
 
         self.ucsLabel = tkinter.Label(self.rightBar, text="Uniform- cost search")
         self.ucsLabel.grid(row=1, column=0)
 
-        self.ucsStartButton = tkinter.Button(self.rightBar, text="Solve", command=partial(self.solveFunc, "UCS"))
-        self.ucsStartButton.grid(row=1, column=1)
+        self.ucsButton = tkinter.Button(self.rightBar, text="Solve", command=partial(self.solveFunc, "UCS"))
+        self.ucsButton.grid(row=1, column=1)
 
         # -------------------------- DFS --------------------------------
 
         self.dfsLabel = tkinter.Label(self.rightBar, text="Depth first search")
         self.dfsLabel.grid(row=2, column=0)
         
-        self.dfsCalculateButton = tkinter.Button(self.rightBar, text="Solve", command=partial(self.solveFunc, "DFS"))
-        self.dfsCalculateButton.grid(row=2, column=1)
+        self.dfsButton = tkinter.Button(self.rightBar, text="Solve", command=partial(self.solveFunc, "DFS"))
+        self.dfsButton.grid(row=2, column=1)
 
         # ------------------------- IDS -----------------------------------
 
@@ -329,9 +332,12 @@ class GameWindow(tkinter.Tk):
 
         self.aStarButton = tkinter.Button(self.rightBar, text="Solve", command=partial(self.solveFunc, "aStar"))
         self.aStarButton.grid(row=5, column=1)
-
+        
         self.graph = Graph(self.board)
+        self.calculationStartTime = time.time()
         self.updateSpecsClock()
+
+
 
   
     def allButtonsState(self, state):
@@ -339,9 +345,9 @@ class GameWindow(tkinter.Tk):
             tile["state"] = state 
 
         self.shuffleButton["state"] = state
-        self.bfsCalculateButton["state"] = state
-        self.ucsStartButton["state"] = state
-        self.dfsCalculateButton["state"] = state
+        self.bfsButton["state"] = state
+        self.ucsButton["state"] = state
+        self.dfsButton["state"] = state
         self.idsButton["state"] = state
         self.gbsButton["state"] = state
         self.aStarButton["state"] = state
