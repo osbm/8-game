@@ -373,27 +373,28 @@ class GameWindow(tkinter.Tk):
         thread.start()
         
 
-    def threadFunc(self, func):
+    def threadFunc(self, searchFunc):
+        if self.graph.board == [i for i in range(9)]:
+            return
         self.vertexCounter = True
-        self.allButtonsState("disabled")
-
-
-        startTime = time.time()
-        solution = func() # Action
-        difference = time.time() - startTime
-        minutes, seconds = divmod(difference, 60)
-        seconds = round(seconds, 2)
-
-
-        self.timeLabel["text"] = f"Calculation time: {int(minutes)}min {seconds}sec"
         
-        self.vertexCounter = False
-        print("solution: ",solution)
-        moves = [int(move) for move in solution]
+        self.allButtonsState("disabled")
+        searchFunc[1].configure(background="blue")
 
-        for move in moves:
-            self.tileButtonFunc(move)
-            time.sleep(moveDelay)
+        self.calculationStartTime = time.time()
+        solution = searchFunc[0]() # Action
+        self.vertexCounter = False
+        if solution:
+            searchFunc[1].configure(background="green")
+            moves = [int(move) for move in solution]
+            print(f"{solution=} {len(solution)=}")
+            self.solutionLength.configure(text=f"Solution length {len(solution)}")
+            for move in moves:
+                self.tileButtonFunc(move)
+                time.sleep(moveDelay)
+        else:
+            searchFunc[1].configure(background="red")
+        
 
         self.allButtonsState("normal")
 
@@ -416,10 +417,9 @@ class GameWindow(tkinter.Tk):
 
     def shuffleButtonFunc(self):
         random.shuffle(self.graph.board)
-        print("shuffled Once")
         while not self.isBoardValid(self.graph.board):
             random.shuffle(self.graph.board)
-            print("shuffled twice")
+            
         self.updateTiles()
 
 
