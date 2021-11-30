@@ -7,14 +7,13 @@ import time
 import numpy as np
 import threading
 import sys
-random.seed(42)# i need to test the algorithms on the same boards to check if they work consistently
+#random.seed(42)# i need to test the algorithms on the same boards to check if they work consistently
 
 # i have used the walrus operator in this script so your python version must be higher from 3.8
 assert sys.version_info > (3, 8), "Use Python 3.8 or newer"
 
-# https://www.baeldung.com/cs/iterative-deepening-vs-depth-first-search
 
-moveDelay = 0.3   # s
+moveDelay = 0.1   # s
 specsUpdate = 100 # ms
 
 class Graph:
@@ -56,14 +55,12 @@ class Graph:
             for child, move in self.getChildNodes(self.strToList(currentNode)):
                 
                 move = path + str(move)
-                #print(child, move, len(move), "queue length: ", len(queue))
 
                 if child not in visited:
                     visited.append(child)
                     queue.append((child, move))
                     if child == "012345678":
                         return move
-        #print("This is a complete search. This is not supposed to happen!!")
         return ""
 
     def ucs(self): # Uniform- cost search
@@ -90,7 +87,6 @@ class Graph:
 
             for child, move in self.getChildNodes(self.strToList(currentNode)):
                 move = path + str(move)
-                #print(child, move, len(move), "queue length: ", len(queue))
 
                 if child not in visited:
                     visited.append(child)
@@ -118,12 +114,12 @@ class Graph:
                 move = path + str(move)
                 if len(move) > maxDepth:
                     continue
+                
                 if child not in visited:
-                    #print(maxDepth, child, move, "\t", len(move), "queue length: ", len(stack))
                     stack.append((child, move))
-                    visited.append(vertex)
-                    if vertex == "012345678":
-                        return path
+                    visited.append(child)
+                    if child == "012345678":
+                        return move
         return ""
     
     def ids(self): # Iterative deepening search
@@ -136,7 +132,6 @@ class Graph:
         return ""
 
     def evaluate(self, board: str):
-        #print(board)
         evaluation = 0
         for i in range(9):
             index =  board.index(str(i))
@@ -166,7 +161,6 @@ class Graph:
             for child, move in self.getChildNodes(self.strToList(currentNode)):
                 
                 move = path + str(move)
-                #print(child, move, len(move), "queue length: ", len(queue))
 
                 if child not in visited:
                     visited.append(child)
@@ -197,12 +191,12 @@ class Graph:
             for child, move in self.getChildNodes(self.strToList(currentNode)):
                 
                 move = path + str(move)
-                #print(child, move, len(move), "queue length: ", len(queue))
 
                 if child not in visited:
                     visited.append(child)
                     queue.append((child, move, self.evaluate(child)))
                     if child == "012345678":
+
                         return move
         return ""
 
@@ -243,7 +237,7 @@ class GameWindow(tkinter.Tk):
         self.title("Test search algorithms on 8 game") 
         
         self.gameFrame = tkinter.Frame(self)  # create a frame to put game in it
-        self.gameFrame.grid(row=0, column=0) # place the frame into the window
+        self.gameFrame.grid(row=0, column=0, padx=30, pady=30) # place the frame into the window
     
         self.board = [i for i in range(9)]
         self.tileImages = {str(i): self.tileImage(i+1) for i in self.board}
@@ -264,14 +258,14 @@ class GameWindow(tkinter.Tk):
         self.bottomFrame = tkinter.Frame(self)
         self.bottomFrame.grid(row=1, column=0)
         
-        self.shuffleButton = tkinter.Button(self.bottomFrame, text="Press to shuffle board", command=self.shuffleButtonFunc)
-        self.shuffleButton.grid(row=0, column=0)
+        self.shuffleButton = tkinter.Button(self.bottomFrame, text="Press to \nshuffle board", command=self.shuffleButtonFunc)
+        self.shuffleButton.grid(row=0, column=0, rowspan=55, sticky="nes", padx=50, pady=20)
         
         self.vertexCounter = False
 
 
         self.rightBar = tkinter.Frame(self)
-        self.rightBar.grid(row=0, column=1)
+        self.rightBar.grid(row=0, column=1, padx=30)
 
         self.visitedVertexCounter = tkinter.Label(self.bottomFrame, text="Visited vertex number: 0")
         self.visitedVertexCounter.grid(row=0, column=1)
@@ -294,7 +288,7 @@ class GameWindow(tkinter.Tk):
         self.bfsLabel.grid(row=0, column=0)
 
         self.bfsButton = tkinter.Button(self.rightBar, text="Solve", command=partial(self.solveFunc, "BFS"))
-        self.bfsButton.grid(row=0, column=1)
+        self.bfsButton.grid(row=0, column=1, pady=10)
 
         # ------------------------- UCS ------------------------------
 
@@ -302,7 +296,7 @@ class GameWindow(tkinter.Tk):
         self.ucsLabel.grid(row=1, column=0)
 
         self.ucsButton = tkinter.Button(self.rightBar, text="Solve", command=partial(self.solveFunc, "UCS"))
-        self.ucsButton.grid(row=1, column=1)
+        self.ucsButton.grid(row=1, column=1, pady=10)
 
         # -------------------------- DFS --------------------------------
 
@@ -310,7 +304,7 @@ class GameWindow(tkinter.Tk):
         self.dfsLabel.grid(row=2, column=0)
         
         self.dfsButton = tkinter.Button(self.rightBar, text="Solve", command=partial(self.solveFunc, "DFS"))
-        self.dfsButton.grid(row=2, column=1)
+        self.dfsButton.grid(row=2, column=1, pady=10)
 
         # ------------------------- IDS -----------------------------------
 
@@ -318,7 +312,7 @@ class GameWindow(tkinter.Tk):
         self.idsLabel.grid(row=3, column=0)
 
         self.idsButton = tkinter.Button(self.rightBar, text="Solve", command=partial(self.solveFunc, "IDS"))
-        self.idsButton.grid(row=3, column=1)
+        self.idsButton.grid(row=3, column=1, pady=10, padx=5)
 
         # ------------------------- GBS ------------------------------------
 
@@ -326,7 +320,7 @@ class GameWindow(tkinter.Tk):
         self.gbsLabel.grid(row=4, column=0)
 
         self.gbsButton = tkinter.Button(self.rightBar, text="Solve", command=partial(self.solveFunc, "GBS"))
-        self.gbsButton.grid(row=4, column=1)
+        self.gbsButton.grid(row=4, column=1, pady=10)
 
         # ------------------------- A* --------------------------------------
 
@@ -334,8 +328,13 @@ class GameWindow(tkinter.Tk):
         self.aStarLabel.grid(row=5, column=0)
 
         self.aStarButton = tkinter.Button(self.rightBar, text="Solve", command=partial(self.solveFunc, "aStar"))
-        self.aStarButton.grid(row=5, column=1)
+        self.aStarButton.grid(row=5, column=1, pady=10)
         
+        # credits
+        self.osmanLabel = tkinter.Label(self, text="Made by Osman Faruk Bayram \n 2003818")
+        self.osmanLabel.grid(row=1, column=1)
+
+
         self.graph = Graph(self.board)
         self.calculationStartTime = time.time()
         self.updateSpecsClock()
@@ -398,12 +397,12 @@ class GameWindow(tkinter.Tk):
 
         self.calculationStartTime = time.time()
         solution = searchFunc[0]() # Action
+        
         self.vertexCounter = False
         if solution:
             searchFunc[1].configure(background="green")
             moves = [int(move) for move in solution]
-            print(f"{solution=} {len(solution)=}")
-            self.solutionLength.configure(text=f"Solution length {len(solution)}")
+            self.solutionLength.configure(text=f"Solution Length: {len(solution)}")
             for move in moves:
                 self.tileButtonFunc(move)
                 time.sleep(moveDelay)
