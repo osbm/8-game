@@ -285,6 +285,9 @@ class GameWindow(tkinter.Tk):
         self.solutionLength =tkinter.Label(self.bottomFrame, text="Solution Length: 0")
         self.solutionLength.grid(row=3, column=1)
 
+        self.idsDepthLabel = tkinter.Label(self.bottomFrame, text = "IDS Depth: 0")
+        self.idsDepthLabel.grid(row=4, column=1)
+
         # ------------------------- BFS ------------------------------
 
         self.bfsLabel = tkinter.Label(self.rightBar, text="Breadth-first Search")
@@ -364,9 +367,8 @@ class GameWindow(tkinter.Tk):
             minutes, seconds = divmod(difference, 60)
             seconds = round(seconds, 2)
 
-
             self.timeLabel["text"] = f"Calculation time: {int(minutes)}min {seconds}sec"
-            
+            self.idsDepthLabel["text"] = f"IDS Depth: {self.graph.idsDepth}"
             self.visitedVertexCounter["text"] = f"Visited vertex number: {self.graph.visitedNodes}"
         self.after(100, self.updateSpecsClock)
 
