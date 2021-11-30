@@ -350,11 +350,18 @@ class GameWindow(tkinter.Tk):
 
     def updateSpecsClock(self):
         if self.vertexCounter:
+            
             self.visitedVertexCounter["text"] = f"Visited vertex number: {self.graph.visitedNodes}"
             self.activeVertexCounter["text"] = f"Active vertex number: {self.graph.activeNodes}"
         
+            difference = time.time() - self.calculationStartTime
+            minutes, seconds = divmod(difference, 60)
+            seconds = round(seconds, 2)
 
-        self.visitedVertexCounter["text"] = f"Visited vertex number: {self.graph.visitedNodes}"
+
+            self.timeLabel["text"] = f"Calculation time: {int(minutes)}min {seconds}sec"
+            
+            self.visitedVertexCounter["text"] = f"Visited vertex number: {self.graph.visitedNodes}"
         self.after(100, self.updateSpecsClock)
 
 
