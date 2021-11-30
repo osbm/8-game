@@ -361,12 +361,12 @@ class GameWindow(tkinter.Tk):
     def solveFunc(self, n): 
         
         searchFunctions = {
-            "BFS": self.graph.bfs,
-            "UCS": self.graph.ucs,
-            "DFS": self.graph.dfs,
-            "IDS": self.graph.ids,
-            "GBS": self.graph.gbs,
-            "aStar": self.graph.aStar
+            "BFS": (self.graph.bfs, self.bfsButton),
+            "UCS": (self.graph.ucs, self.ucsButton),
+            "DFS": (self.graph.dfs, self.dfsButton),
+            "IDS": (self.graph.ids, self.idsButton),
+            "GBS": (self.graph.gbs, self.gbsButton),
+            "aStar": (self.graph.aStar, self.aStarButton)
         }
         
         thread = threading.Thread(target=partial(self.threadFunc, searchFunctions[n]))
